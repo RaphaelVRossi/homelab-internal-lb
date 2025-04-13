@@ -1,0 +1,44 @@
+name: internal-lb
+services:
+    internal-lb:
+        cpu_shares: 90
+        command: []
+        container_name: internal-lb
+        deploy:
+            resources:
+                limits:
+                    memory: "256m"
+        env_file: ".env"
+        hostname: internal-lb
+        image: nginx:latest
+        labels:
+            icon: https://img.icons8.com/?size=100&id=t2x6DtCn5Zzx&format=png&color=000000
+        network_mode: host
+        ports:
+            - mode: ingress
+              target: 80
+              published: "80"
+              protocol: tcp
+            - mode: ingress
+              target: 443
+              published: "443"
+              protocol: tcp
+        restart: unless-stopped
+        volumes:
+            - type: bind
+              source: /home/rrossi/desenv/internal-lb/templates
+              target: /etc/nginx/templates
+networks:
+    default:
+        name: internal-lb_default
+x-casaos:
+    author: self
+    category: self
+    hostname: ""
+    icon: https://img.icons8.com/?size=100&id=t2x6DtCn5Zzx&format=png&color=000000
+    index: /
+    is_uncontrolled: false
+    port_map: ""
+    scheme: http
+    title:
+        custom: Internal LB
